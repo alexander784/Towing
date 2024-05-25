@@ -42,5 +42,16 @@ class UserById(Resource):
         except ValueError as e:
             return make_response(jsonify({"error": [str(e)]}))
         
-    
+    def delete(self, user_id):
+        user = User.query.filter_by(id=user_id).first()
+
+        if not user:
+            return make_response(jsonify({"error":"USer not found"}), 400)
+        db.session.delete(user)
+        db.session.commit()
+
+        return make_response(jsonify ({
+            "success":True,
+            "message": "USer deleted successfully"
+        }), 204)
     
