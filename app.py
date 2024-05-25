@@ -1,8 +1,13 @@
 from config import app
 from flask_restful import Api,Resource
 from flask import Flask, jsonify,make_response
+from flasgger import Swagger
+
 
 api = Api(app)
+swagger = Swagger(app)
+
+
 
 
 class Index(Resource):
