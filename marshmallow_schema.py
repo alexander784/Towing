@@ -1,6 +1,6 @@
 from marshmallow import fields,Schema
 from config import ma
-from model import User, Car,Location
+from model import User, Car,Location,TowRequest
 
 
 class UserSchema(ma.Schema):
@@ -40,6 +40,15 @@ class LocationSchema(ma.Schema):
 
 Location_schema = LocationSchema()
 Location_schema = LocationSchema(many=True)
+
+class TowRequestSchema(ma.Schema):
+    class Meta:
+        Model = TowRequest
+        id = fields.Int(dump_only=True)
+        location_id = fields.Str(required=True)
+        date_requested = fields.Int(required=True)
+
+
 
 
 
