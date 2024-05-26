@@ -2,8 +2,13 @@ from flask import Blueprint, jsonify, make_response,request
 from flask_restful import Api,Resource
 from model import User,db
 from marshmallow_schema import user_schema, users_schema
-from config import user_bp
+from flask_restx import Namespace,fields,Resource
 
+user_ns = Namespace("user", description="A namespace for user")
+user_model = user_ns.model(
+    "User",
+    {"id":fields.Integer(), }
+)
 
 
 class Users(Resource):
