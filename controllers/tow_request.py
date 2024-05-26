@@ -34,6 +34,11 @@ class TowRequestResource(Resource):
         if not location:
             return jsonify({"message":"Invalid location ID"}), 400
         
+        new_tow_request = TowRequest(location_id=location_id,user_id=user.id)
+        db.session.add(new_tow_request)
+        db.session.commit()
+
+        return jsonify({"message":"Tow request submitted successfully"}),201
         
 
 
