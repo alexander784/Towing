@@ -1,9 +1,9 @@
-from marshmallow import fields
+from marshmallow import fields,Schema
 from config import ma
 from model import User, Car,Location
 
 
-class UserSchema(ma.schema):
+class UserSchema(ma.Schema):
     class Meta:
         model = User
 
@@ -21,10 +21,10 @@ class CarSchema(ma.Schema):
         model = Car
 
         id = fields.Integer(dump_only=True)
-        make = fields.String(required=True)
-        model - fields.String(required=True)
+        make = fields.Str(required=True)
+        model = fields.Str(required=True)
         year = fields.Int(required=True)
-        color = fields.String(required=True)
+        color = fields.Str(required=True)
     
 
 Car_schema = CarSchema()
@@ -36,7 +36,7 @@ class LocationSchema(ma.Schema):
     class Meta:
         model = Location
         id = fields.Int(dump_only=True)
-        place_name = fields.String(required=True)
+        place_name = fields.Str(required=True)
 
 Location_schema = LocationSchema()
 Location_schema = LocationSchema(many=True)

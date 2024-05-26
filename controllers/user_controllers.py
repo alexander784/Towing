@@ -2,12 +2,9 @@ from flask import Blueprint, jsonify, make_response,request
 from flask_restful import Api,Resource
 from model import User,db
 from marshmallow_schema import user_schema, users_schema
+from config import user_bp
 
 
-
-
-user_bp = Blueprint("user_bp", __name__)
-api = Api(user_bp)
 
 class Users(Resource):
     def get(self):
@@ -55,7 +52,7 @@ class UserById(Resource):
             "message": "USer deleted successfully"
         }), 204)
     
-api.add_resource(Users, "/users")
-api.add_resource(UserById, "/users/<int:user_id>")
+# api.add_namespace(Users, "/users")
+# api.add_resource(UserById, "/users/<int:user_id>")
 
     
