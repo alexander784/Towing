@@ -27,6 +27,13 @@ class TowRequestResource(Resource):
         user_identity = get_jwt_identity()
         user = User.query.filter_by(username=user_identity).first()
 
+        if not user:
+            return jsonify({"massage":"USer not found"}), 404
+        
+        location = Location.query.get(location_id)
+        if not location:
+            return jsonify({"message":"Invalid location ID"}), 400
+        
         
 
 
