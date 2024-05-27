@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_marshmallow import Marshmallow
 from dotenv import load_dotenv
+from flask_jwt_extended import JWTManager
 import os
 
 load_dotenv()
@@ -11,6 +12,9 @@ load_dotenv()
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 app = Flask(__name__)
+
+jwt = JWTManager(app)
+
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')

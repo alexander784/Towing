@@ -48,6 +48,8 @@ class TowRequestSchema(ma.Schema):
         location_id = fields.Str(required=True)
         date_requested = fields.Int(required=True)
 
+Tow_schema = TowRequestSchema()
+Tow_schema = TowRequestSchema(many=True)
 
 
 
