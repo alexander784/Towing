@@ -13,7 +13,8 @@ signup_model = auth_ns.model(
     {
         "username": fields.String(),
         "email": fields.String(),
-        "password": fields.String()
+        "password": fields.String(),
+        "confirm_password":fields.String()
     }
 )
 
@@ -30,12 +31,19 @@ class Signup(Resource):
     @auth_ns.expect(signup_model)
     def post(self):
         try:
-            if ["password"] == ["confirm password"]:
+            data = request.json  # Get JSON data from the request
+            password = data.get('password')
+            confirm_password = data.get('confirm_password')
+
+            if password == confirm_password:
+                # Decode password from bytes to string if necessary
+                if isinstance(password, bytes):
+                    password = password.decode('utf-8')
+                
                 new_user = User(
-                    username = ["username"],
-                    email = ["email"],
-                    _password_hash=generate_password_hash(
-                        ["password"].encode('utf-8'))
+                    username=data.get('username'),
+                    email=data.get('email'),
+                    _password_hash=generate_password_hash(password)
                 )
                 db.session.add(new_user)
                 db.session.commit()
@@ -44,30 +52,35 @@ class Signup(Resource):
             
             return make_response(jsonify({"error": "Passwords must match"}))
         except ValueError as e:
-            return make_response(jsonify({"error": [str(e)]}))
+            return make_response(jsonify({"error": str(e)}))
+
             
-        
 @auth_ns.route('/login')
 class Login(Resource):
     @auth_ns.expect(login_model)
     def post(self):
-        data = request.json
+        try:
+            data = request.json
 
-        username = data.get('username')
-        password = data.get('password')
+            username = data.get('username')
+            password = data.get('password')
 
-        db_user = User.query.filter_by(username=username).first()
+            db_user = User.query.filter_by(username=username).first()
+            
+            if db_user and db_user.verify_password(password):
+                access_token = create_access_token(identity=db_user.username)
+                refresh_token = create_refresh_token(identity=db_user.username)
+
+                return make_response(jsonify({"message": "Login successful", "tokens": {
+                    "access": access_token,
+                    "refresh": refresh_token },
+                    "user": user_schema.dump(db_user)}), 200)
         
-        if db_user and check_password_hash(db_user.password, password):
-            access_token = create_access_token(identity=db_user.username)
-            refresh_token = create_refresh_token(identity=db_user.username)
+            return make_response(jsonify({"error":"Invalid username or password"}), 401)
+        except ValueError as e:
+            return make_response(jsonify({"error": str(e)}), 500)
 
-            return make_response(jsonify({"message": "Login successful", "tokens": {
-                "access": access_token,
-                "refresh": refresh_token },
-                "user": user_schema.dump(db_user)}), 200)
-        
-        return make_response(jsonify({"error":"Invalid username or password"}), 401)
+
 
 @auth_ns.route('/refresh')
 class RefreshResource(Resource):
