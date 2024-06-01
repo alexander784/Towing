@@ -1,6 +1,8 @@
 ## Car Towing API
 <p>Car Towing API allows car owners to request towing services by submitting their location information to towing companies.Car owners can quickly and easily request assistance when their vehicles get stuck.</p>
 
+
+![Car Towing API](/image.png)
 ## Usage
 1. Authentication:  Obtain an API token by authenticating as a car owner. This token will be used to authorize requests to the API. <br>
 
@@ -24,14 +26,14 @@
 Examples Request:
 
 `POST /auth/login`<br>
-        {
+        {<br>
             `"username": ``"your_username",` <br>
-            `"password": "your_password"`
+            `"password": "your_password"`<br>
         }
 
 Example request:
-{
-    `"access_token": "your_access_token"`
+{<br>
+    `"access_token": "your_access_token"` <br>
 }
 <p>Include the obtained access_token in the Authorization header of subsequent requests to authorize access to protected endpoints</p>
 
@@ -40,8 +42,8 @@ Example request:
  <p>Send a POST request to `/tow/request`</p>
 
  `POST/tow/request`<br>
-  {
-    `"location_id":"1"`
+  { <br>
+    `"location_id":"1"`<br>
   }
 
 ## Installation
