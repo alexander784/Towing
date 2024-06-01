@@ -20,6 +20,7 @@ tow_request_model = tow_ns.model(
 @tow_ns.route("/request")
 class TowRequestResource(Resource):
     @tow_ns.expect(tow_request_model)
+    @jwt_required()
     def post(self):
         data = request.json
         location_id = data.get("location_id")
@@ -28,7 +29,7 @@ class TowRequestResource(Resource):
         user = User.query.filter_by(username=user_identity).first()
 
         if not user:
-            return jsonify({"massage":"USer not found"}), 404
+            return jsonify({"message":"User not found"}), 404
         
         location = Location.query.get(location_id)
         if not location:

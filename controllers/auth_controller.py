@@ -31,12 +31,11 @@ class Signup(Resource):
     @auth_ns.expect(signup_model)
     def post(self):
         try:
-            data = request.json  # Get JSON data from the request
+            data = request.json  
             password = data.get('password')
             confirm_password = data.get('confirm_password')
 
             if password == confirm_password:
-                # Decode password from bytes to string if necessary
                 if isinstance(password, bytes):
                     password = password.decode('utf-8')
                 
